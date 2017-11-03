@@ -1,28 +1,24 @@
-const readline = require('readline');
 
-const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
 
 class TowersOfHanoi {
   constructor() {
     this.stacks = [[3,2,1],[],[]];
   }
 
-  run(completionCallback) {
+  run(reader, completionCallback) {
     // we ask the player for a move,
     // validate the move, process the move,
     // and then ask him again until all disks
     // are lined up in order
     // on either columns 2 or 3
+    this.reader = reader;
     this.promptMoves((col1, col2) => {
       if(!this.move(col1, col2)) {
         console.log('invalid');
       }
 
       if(!this.isWon()) {
-        this.run(completionCallback);
+        this.run(reader, completionCallback);
       } else {
         console.log('You win!');
         completionCallback();
@@ -33,17 +29,17 @@ class TowersOfHanoi {
   promptMoves(callback) {
     this.print();
 
-    reader.question('Please enter first column: ', (answer1) => {
+    this.reader.question('Please enter first column: ', (answer1) => {
       var col1 = parseInt(answer1) - 1;
-      reader.question('Please enter second column: ', (answer2) => {
+      this.reader.question('Please enter second column: ', (answer2) => {
         var col2 = parseInt(answer2) - 1;
-        callback.apply(this, [col1, col2]);
+        callback(col1, col2);
       });
     });
   }
 
   isValidMove(col1, col2) {
-    if(col1 < 0 || col1 > 2 || col2 < 0 || col2 > 2) {
+    if(col1 < 0 || col1 > 2 || col2 < 0 || col2 > 2 || Number.isNaN(col1) || Number.isNaN(col2)) {
       return false;
     } else if(this.stacks[col1].length === 0) {
       return false;
@@ -76,11 +72,9 @@ class TowersOfHanoi {
 
 }
 
+module.exports = TowersOfHanoi;
 
-const game = new TowersOfHanoi();
-game.run(function() {
-  reader.close();
-});
+
 // game.run(function () {
 //   console.log('lol');
 // });
