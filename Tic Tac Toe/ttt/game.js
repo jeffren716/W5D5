@@ -1,25 +1,31 @@
 const Board = require("./board");
 
-const readline = require('readline');
-
-const reader = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-
-
 
 class Game {
-  constructor(read) {
-    this.reader = read;
+  constructor() {
     this.board = new Board();
   }
 
-  run(reader, completionCallback) {
-    
+  run(read, completionCallback) {
+    this.reader = read;
+
+  }
+
+  won() {
+
+  }
+
+  winner() {
+
+  }
+
+  empty() {
+
+  }
+
+  place_mark(pos, mark) {
+
   }
 }
 
-
-const game = new Game(reader);
+module.exports = Game;
